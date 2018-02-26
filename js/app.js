@@ -1,11 +1,14 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.x = x;
+    this.y = y;
+    this.speed = Math.random() * 5;
 };
 
 // Update the enemy's position, required method for game
@@ -14,6 +17,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += dt * 100 * this.speed;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -24,12 +28,47 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function () {
+    this.x = 200;
+    this.y = 320;
+    this.img = 'images/char-boy.png';
+}
+Player.prototype.update = function () {
+    // this.render();
+}
+Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.img), this.x, this.y);
+}
+Player.prototype.handleInput = function (keyboard) {
+    var moveX = 0;
+    var moveY = 0;
+    switch (keyboard){
+        case 'left':
+            moveX = -80;
+            break;
+        case 'up':
+            moveY = -80;
+            break;
+        case 'right':
+            moveX = 80;
+            break;
+        case 'down':
+            moveY = 80;
+            break;
+    }
+    this.x += moveX;
+    this.y += moveY;
+    this.update();
+}
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
+// var enemy = new Enemy(-100, 50);
+// enemy.render();
+var allEnemies = [new Enemy(-100, 60 ), new Enemy(-100, 140), new Enemy(-100, 230)];
+var player = new Player(200, 100);
 
 
 // This listens for key presses and sends the keys to your
