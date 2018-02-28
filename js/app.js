@@ -22,17 +22,18 @@ Enemy.prototype.update = function(dt) {
     // 碰撞检测
     var that = this;
     var rect1 = {
-        x: that.x,
-        y: that.y,
+        x: that.x - 50,
+        y: that.y - 40,
         width: 100,
-        height: 100,
+        height: 80,
     }
     var rect2 = {
         x: player.x,
         y: player.y,
-        width: 100,
-        height: 100,
+        width: 50 - 25,
+        height: 50 - 25,
     }
+    // 如果发生碰撞player重制到初始位置
     if(impactChecking(rect1, rect2)){
         player.x = 200;
         player.y = 380;
@@ -61,6 +62,7 @@ Player.prototype.render = function () {
 Player.prototype.handleInput = function (keyboard) {
     var moveX = 0;
     var moveY = 0;
+    var that = this;
     switch (keyboard){
         case 'left':
             moveX = -100;
@@ -75,11 +77,21 @@ Player.prototype.handleInput = function (keyboard) {
             moveY = 80;
             break;
     }
+    // 越界检测
     if(this.x + moveX > 400 || this.x + moveX < 0) return;
+    // 越界检测
     if(this.y + moveY > 380 || this.y + moveY < -80) return;
     this.x += moveX;
     this.y += moveY;
+    console.log(this.x, this.y);
     this.update();
+    if(this.y < 0){
+        setTimeout(function(){
+            alert('游戏胜利！')
+            that.x = 200;
+            that.y = 380;
+        }, 300);
+    }
 }
 
 
